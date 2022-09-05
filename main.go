@@ -75,20 +75,23 @@ func newAccordion() *accordion {
 func (a *accordion) searchNote(note int) {
 	for i, n := range a.roots {
 		if n == note {
-			fmt.Printf("roots button %d\n", i+1)
+			fromC := i - 9
+			fmt.Printf("roots button %d\n", fromC)
 		}
 	}
 
 	for i, n := range a.maj3s {
 		if n == note {
-			fmt.Printf("maj3s button %d\n", i+1)
+			fromC := i - 9
+			fmt.Printf("maj3s button %d\n", fromC)
 		}
 	}
 
 	for i, ch := range a.majs {
 		for _, n := range ch {
 			if n == note {
-				fmt.Printf("majs button %d\n", i+1)
+				fromC := i - 9
+				fmt.Printf("majs button %d\n", fromC)
 			}
 		}
 	}
@@ -96,7 +99,8 @@ func (a *accordion) searchNote(note int) {
 	for i, ch := range a.mins {
 		for _, n := range ch {
 			if n == note {
-				fmt.Printf("mins button %d\n", i+1)
+				fromC := i - 9
+				fmt.Printf("mins button %d\n", fromC)
 			}
 		}
 	}
@@ -104,7 +108,8 @@ func (a *accordion) searchNote(note int) {
 	for i, ch := range a.dom7s {
 		for _, n := range ch {
 			if n == note {
-				fmt.Printf("dom7s button %d\n", i+1)
+				fromC := i - 9
+				fmt.Printf("dom7s button %d\n", fromC)
 			}
 		}
 	}
@@ -112,7 +117,8 @@ func (a *accordion) searchNote(note int) {
 	for i, ch := range a.dim7s {
 		for _, n := range ch {
 			if n == note {
-				fmt.Printf("dim7s button %d\n", i+1)
+				fromC := i - 9
+				fmt.Printf("dim7s button %d\n", fromC)
 			}
 		}
 	}
