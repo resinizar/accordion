@@ -24,11 +24,40 @@ func min7(root int) int {
 	return (root + 9) % 12
 }
 
+type RowName int
+
+const (
+	Maj3s RowName = iota
+	Roots
+	Majs
+	Mins
+	Dom7s
+	Dim7s
+)
+
+func (n RowName) String() string {
+	switch n {
+	case Roots:
+		return "roots"
+	case Maj3s:
+		return "major 3rds"
+	case Majs:
+		return "majors"
+	case Mins:
+		return "minors"
+	case Dom7s:
+		return "dominant 7ths"
+	case Dim7s:
+		return "diminished 7ths"
+	}
+	return "unknown"
+}
+
 type accordion struct {
 	numRows    int
 	numButtons int
 	centerInd  int
-	rows       map[string][20][3]int
+	rows       map[RowName][20][3]int
 }
 
 func newAccordion() *accordion {
@@ -36,7 +65,7 @@ func newAccordion() *accordion {
 
 	// always a full size accordion
 	// control indexing for other sizes
-	a.rows = make(map[string][20][3]int)
+	a.rows = make(map[RowName][20][3]int)
 
 	var new_bs [20][3]int
 	for i := 0; i < 20; i++ {
@@ -47,37 +76,37 @@ func newAccordion() *accordion {
 			new_bs[i] = [3]int{fifth(prev_note), fifth(prev_note), fifth(prev_note)}
 		}
 	}
-	a.rows["roots"] = new_bs
+	a.rows[Roots] = new_bs
 
 	for i := 0; i < 20; i++ {
-		r := a.rows["roots"][i][0]
+		r := a.rows[Roots][i][0]
 		new_bs[i] = [3]int{maj3(r), maj3(r), maj3(r)}
 	}
-	a.rows["maj3s"] = new_bs
+	a.rows[Maj3s] = new_bs
 
 	for i := 0; i < 20; i++ {
-		r := a.rows["roots"][i][0]
+		r := a.rows[Roots][i][0]
 		new_bs[i] = [3]int{r, maj3(r), fifth(r)}
 	}
-	a.rows["majs"] = new_bs
+	a.rows[Majs] = new_bs
 
 	for i := 0; i < 20; i++ {
-		r := a.rows["roots"][i][0]
+		r := a.rows[Roots][i][0]
 		new_bs[i] = [3]int{r, min3(r), fifth(r)}
 	}
-	a.rows["mins"] = new_bs
+	a.rows[Mins] = new_bs
 
 	for i := 0; i < 20; i++ {
-		r := a.rows["roots"][i][0]
+		r := a.rows[Roots][i][0]
 		new_bs[i] = [3]int{r, maj3(r), maj7(r)}
 	}
-	a.rows["dom7s"] = new_bs
+	a.rows[Dom7s] = new_bs
 
 	for i := 0; i < 20; i++ {
-		r := a.rows["roots"][i][0]
+		r := a.rows[Roots][i][0]
 		new_bs[i] = [3]int{min7(r), r, min3(r)}
 	}
-	a.rows["dim7s"] = new_bs
+	a.rows[Dim7s] = new_bs
 
 	// for now only handling full size
 	// later pass these in
