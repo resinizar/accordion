@@ -54,10 +54,7 @@ func (n RowName) String() string {
 }
 
 type accordion struct {
-	numRows    int
-	numButtons int
-	centerInd  int
-	rows       map[RowName][20][3]int
+	rows map[RowName][20][3]int
 }
 
 func newAccordion() *accordion {
@@ -108,24 +105,45 @@ func newAccordion() *accordion {
 	}
 	a.rows[Dim7s] = new_bs
 
-	// for now only handling full size
-	// later pass these in
-	a.numButtons = 20
-	a.numRows = 6
-	a.centerInd = 9
 	return &a
 }
 
-func (a *accordion) searchNote(searchNote int) {
-
+func (a *accordion) searchNote(searchNote int) [6][20]bool {
+	var searchResults [6][20]bool
 	for rowName, row := range a.rows {
-		for i, ch := range row {
+		for ch_ind, ch := range row {
 			for _, n := range ch {
 				if n == searchNote {
-					fromC := i - a.centerInd
-					fmt.Printf("%s button %d\n", rowName, fromC)
+					searchResults[rowName][ch_ind] = true
 					break
 				}
+			}
+		}
+	}
+	return searchResults
+}
+
+func printResults(results [6][20]bool) {
+	for i := 0; i < 20; i++ {
+		fromC := i - 9
+		if fromC < 0 {
+			fmt.Printf("%d ", fromC)
+		} else {
+			fmt.Printf(" %d ", fromC)
+		}
+	}
+
+	for i := 0; i < 6; i++ {
+		fmt.Printf("\n")
+		for k := 0; k < i+1; k++ {
+			fmt.Printf(" ")
+		}
+
+		for j := 0; j < 20; j++ {
+			if results[i][j] == true {
+				fmt.Printf(" ● ")
+			} else {
+				fmt.Printf(" ◯ ")
 			}
 		}
 	}
@@ -133,5 +151,6 @@ func (a *accordion) searchNote(searchNote int) {
 
 func main() {
 	a := newAccordion()
-	a.searchNote(0)
+	results := a.searchNote(0)
+	printResults(results)
 }
